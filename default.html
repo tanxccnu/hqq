@@ -228,6 +228,8 @@ body.menu-open .mobile-menu{display:block}
 .form-success .tick svg{width:34px;height:34px}
 .form-success h3{font-size:var(--fs-xl);font-weight:700;color:var(--navy-800);margin-bottom:var(--sp-3)}
 .form-success p{color:var(--ink-500)}
+.form-error{display:none;margin-top:var(--sp-4);padding:var(--sp-3) var(--sp-4);border-radius:var(--r-md);background:#FDECEC;color:#B42318;border:1px solid #F6C7C1;font-size:var(--fs-sm)}
+.form-error.show{display:block}
 @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
 
 /* ---------- 页脚 ---------- */
@@ -645,11 +647,12 @@ body.menu-open .mobile-menu{display:block}
             <textarea id="note" name="note" placeholder="可简要描述项目背景、规模或时间要求（选填）"></textarea>
           </div>
           <button class="btn btn--primary" type="submit" id="submitBtn">提交咨询需求</button>
+          <div class="form-error" id="formError"></div>
         </form>
         <div class="form-success" id="formSuccess">
           <div class="tick"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h3>提交成功，感谢您的信任</h3>
-          <p>我们已为您生成咨询需求文件（CSV），方案顾问将在 1 个工作日内与您联系。</p>
+          <p id="successText">我们已收到您的咨询需求，方案顾问将在 1 个工作日内与您联系。</p>
         </div>
       </div>
     </div>
@@ -748,7 +751,7 @@ body.menu-open .mobile-menu{display:block}
     sections.forEach(function(s){ so.observe(s); });
   }
 
-  // 表单：校验 + 浏览器端保存为 CSV（纯前端，无服务器依赖）
+  // 表单：优先提交服务端 /api/consult 写入 CSV/TXT；服务端不可用时回退浏览器端下载 CSV
   var form = document.getElementById('leadForm');
   var success = document.getElementById('formSuccess');
   var submitBtn = document.getElementById('submitBtn');
@@ -767,8 +770,28 @@ body.menu-open .mobile-menu{display:block}
   function fmtTime(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds()); }
   function csvCell(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'; }
 
+  var formError = document.getElementById('formError');
+  var successText = document.getElementById('successText');
+  function showSuccess(text){
+    successText.textContent = text;
+    form.style.display = 'none';
+    formError.classList.remove('show');
+    success.classList.add('show');
+    window.scrollTo({top: success.getBoundingClientRect().top + window.scrollY - 120, behavior:'smooth'});
+  }
+  function saveClientFallback(rec){
+    var ts = new Date();
+  var header = ['提交时间','姓名','单位','联系电话','咨询需求','补充说明'];
+    var row = [fmtTime(ts), rec.name, rec.org, rec.phone, rec.need, rec.note];
+    var csv = header.map(csvCell).join(',') + '\n' + row.map(csvCell).join(',');
+    downloadCsv('华钦麒-咨询需求-'+ts.getFullYear()+pad(ts.getMonth()+1)+pad(ts.getDate())+'.csv', csv);
+    showSuccess('当前页面未连接后台服务，已在本地下载咨询需求 CSV 文件；如需后台留存，请通过「node server.js」启动后访问 http://localhost:3000 。');
+  }
+  function showError(text){ formError.textContent = text; formError.classList.add('show'); }
+
   form.addEventListener('submit', function(ev){
     ev.preventDefault();
+    formError.classList.remove('show');
     var name = form.elements['name'].value.trim();
     var org = form.elements['org'].value.trim();
     var phone = form.elements['phone'].value.trim();
@@ -780,18 +803,29 @@ body.menu-open .mobile-menu{display:block}
     setErr('f-name', eName); setErr('f-org', eOrg); setErr('f-phone', ePhone);
     if(eName || eOrg || ePhone){ (eName?form.elements['name']:eOrg?form.elements['org']:form.elements['phone']).focus(); return; }
 
-    var ts = new Date();
-    var header = ['提交时间','姓名','单位','联系电话','咨询需求','补充说明'];
-    var row = [fmtTime(ts), name, org, phone, need, note];
-    var csv = header.map(csvCell).join(',') + '\n' + row.map(csvCell).join(',');
-    downloadCsv('华钦麒-咨询需求-'+ts.getFullYear()+pad(ts.getMonth()+1)+pad(ts.getDate())+'.csv', csv);
+    var label = submitBtn.textContent;
+    submitBtn.disabled = true; submitBtn.textContent = '提交中…';
 
-    form.style.display = 'none';
-    success.classList.add('show');
-    window.scrollTo({top: success.getBoundingClientRect().top + window.scrollY - 120, behavior:'smooth'});
+    fetch('/api/consult', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, org: org, phone: phone, need: need, note: note })
+    }).then(function(r){
+      return r.json().then(function(data){ return { ok: r.ok && data.ok, msg: data.message }; });
+    }).then(function(res){
+      submitBtn.disabled = false; submitBtn.textContent = label;
+      if(res.ok){
+        showSuccess('提交成功，您的咨询需求已保存至后台（CSV/TXT）。方案顾问将在 1 个工作日内与您联系。');
+      } else {
+        showError(res.msg || '提交失败，请稍后重试。');
+      }
+    }).catch(function(){
+      submitBtn.disabled = false; submitBtn.textContent = label;
+      saveClientFallback({ name: name, org: org, phone: phone, need: need, note: note });
+    });
   });
   ['name','org','phone'].forEach(function(k){
-    form.elements[k].addEventListener('input', function(){ document.getElementById('f-'+k).classList.remove('err'); });
+    form.elements[k].addEventListener('input', function(){ document.getElementById('f-'+k).classList.remove('err'); formError.classList.remove('show'); });
   });
 })();
 </script>

@@ -40,17 +40,17 @@ function sanitize(str){
 function initStorage(){
   try {
     if(!fs.existsSync(CSV_FILE)){
-      fs.writeFileSync(CSV_FILE, '\ufeff时间,姓名,单位,电话,需求\n', 'utf8');
+      fs.writeFileSync(CSV_FILE, '\ufeff时间,姓名,单位,电话,需求,补充说明\n', 'utf8');
     }
   } catch(e) {
     console.error('初始化 CSV 失败:', e.message);
   }
 }
 
-function appendRecord({ name, org, phone, need }){
+function appendRecord({ name, org, phone, need, note }){
   const now = new Date();
   const time = now.toLocaleString('zh-CN', { hour12: false });
-  const csvLine = [time, name, org, phone, need]
+  const csvLine = [time, name, org,  phone, need, note || '']
     .map(v => '"' + String(v).replace(/"/g, '""') + '"')
     .join(',') + '\n';
   fs.appendFileSync(CSV_FILE, csvLine, 'utf8');
@@ -62,6 +62,7 @@ function appendRecord({ name, org, phone, need }){
     '单位：' + org,
     '电话：' + phone,
     '需求：' + (need || '无'),
+    '补充说明：' + (note || '无'),
     '----------------',
     ''
   ].join('\n');
@@ -100,12 +101,13 @@ function handleApi(req, res){
       const org = sanitize(data.org);
       const phone = sanitize(data.phone);
       const need = sanitize(data.need);
+      const note = sanitize(data.note);
 
       if(!name) return sendJson(res, 400, { ok: false, message: '请填写姓名' });
       if(!org) return sendJson(res, 400, { ok: false, message: '请填写单位' });
       if(!/^1\d{10}$/.test(phone)) return sendJson(res, 400, { ok: false, message: '请填写正确的手机号' });
 
-      appendRecord({ name, org, phone, need });
+      appendRecord({ name, org, phone, need, note });
       sendJson(res, 200, { ok: true, message: '提交成功' });
     } catch(e) {
       sendJson(res, 400, { ok: false, message: '请求格式错误' });
@@ -131,7 +133,7 @@ const server = http.createServer(function(req, res){
   }
 
   let filePath = path.join(ROOT, decodeURIComponent(pathname));
-  if(pathname === '/') filePath = path.join(ROOT, 'index.html');
+  if(pathname === '/') filePath = path.join(ROOT, '华钦麒科技-宣传页面.html');
   if(fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()){
     filePath = path.join(filePath, 'index.html');
   }

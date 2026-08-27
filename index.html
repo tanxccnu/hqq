@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>华钦麒科技 · 涉密档案数字化与信息安全</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================
+   设计 Token —— 华钦麒科技 UI 设计系统（现代微调版）
+   品牌色：海军蓝 #0E2A47 / 金 #C9A24B / 安全绿 #1E8E5A
+   ========================================================= */
+:root{
+  /* 海军蓝阶 */
+  --navy-900:#0B2238; --navy-800:#0E2A47; --navy-700:#173A5E;
+  --navy-600:#234E78; --navy-500:#2F639A; --navy-400:#5C82A8;
+  --navy-300:#92AAC4; --navy-200:#C5D3E1; --navy-100:#E3EAF2; --navy-50:#F2F5F9;
+  /* 金阶（点缀/强调） */
+  --gold-600:#A8842F; --gold-500:#C9A24B; --gold-400:#D9B86C;
+  --gold-300:#E8D09A; --gold-100:#F7EFD9;
+  /* 安全绿阶 */
+  --green-700:#157047; --green-600:#1E8E5A; --green-500:#2BA86E; --green-100:#E2F4EB;
+  /* 中性冷灰 */
+  --ink-900:#16202E; --ink-700:#3C4656; --ink-500:#6B7585; --ink-400:#97A0AD;
+  --line-300:#C7CDD6; --line-200:#E4E8EE; --line-100:#F2F4F8;
+  --paper:#F7F9FC; --white:#FFFFFF;
+  /* 语义 */
+  --success:#1E8E5A; --warning:#E0A82E; --danger:#D9534F; --info:#2F639A;
+  /* 字体 */
+  --font-sans:'Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-serif:'Noto Serif SC',serif;
+  /* 字号阶梯 */
+  --fs-xs:.75rem; --fs-sm:.8125rem; --fs-base:.9375rem; --fs-md:1rem;
+  --fs-lg:1.125rem; --fs-xl:1.375rem; --fs-2xl:1.75rem; --fs-3xl:2.25rem;
+  --fs-4xl:3rem; --fs-5xl:3.75rem;
+  /* 8pt 间距 */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px;
+  --sp-8:32px; --sp-10:40px; --sp-12:48px; --sp-16:64px; --sp-20:80px; --sp-24:96px;
+  /* 圆角 */
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-2xl:28px; --r-pill:999px;
+  /* 柔和阴影（低透明海军蓝） */
+  --sh-sm:0 1px 2px rgba(14,42,71,.06),0 1px 3px rgba(14,42,71,.04);
+  --sh-md:0 4px 12px rgba(14,42,71,.08),0 2px 4px rgba(14,42,71,.05);
+  --sh-lg:0 12px 28px rgba(14,42,71,.12),0 4px 8px rgba(14,42,71,.06);
+  --sh-xl:0 24px 60px rgba(14,42,71,.18);
+  --sh-gold:0 10px 26px rgba(201,162,75,.30);
+  /* 过渡 */
+  --t-fast:140ms ease; --t:240ms cubic-bezier(.4,0,.2,1); --t-slow:420ms cubic-bezier(.4,0,.2,1);
+  --maxw:1200px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-sans);color:var(--ink-900);background:var(--white);line-height:1.65;font-size:var(--fs-base);-webkit-font-smoothing:antialiased}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+:focus-visible{outline:3px solid var(--gold-500);outline-offset:2px;border-radius:4px}
+.container{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 var(--sp-6)}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--sp-2);font-size:var(--fs-sm);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-600)}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--gold-500);border-radius:2px}
+.section{padding:var(--sp-24) 0}
+.section-head{max-width:720px;margin:0 auto var(--sp-12);text-align:center}
+.section-head h2{font-family:var(--font-serif);font-size:var(--fs-3xl);font-weight:700;color:var(--navy-800);margin:var(--sp-3) 0 var(--sp-4);letter-spacing:.01em}
+.section-head p{color:var(--ink-500);font-size:var(--fs-lg)}
+.bg-paper{background:var(--paper)}
+
+/* ---------- 按钮 ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);font-family:var(--font-sans);font-weight:700;font-size:var(--fs-base);padding:0 var(--sp-6);height:50px;border-radius:var(--r-pill);border:1.5px solid transparent;cursor:pointer;transition:transform var(--t-fast),box-shadow var(--t-fast),background var(--t-fast),border-color var(--t-fast);white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn--primary{background:var(--gold-500);color:var(--navy-900);box-shadow:var(--sh-gold)}
+.btn--primary:hover{background:var(--gold-400);transform:translateY(-2px);box-shadow:0 14px 32px rgba(201,162,75,.38)}
+.btn--ghost{background:transparent;color:var(--navy-800);border-color:var(--line-300)}
+.btn--ghost:hover{border-color:var(--navy-400);background:var(--navy-50)}
+.btn--light{background:var(--white);color:var(--navy-800);box-shadow:var(--sh-md)}
+.btn--light:hover{transform:translateY(-2px);box-shadow:var(--sh-lg)}
+.btn--outline-light{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+.btn--outline-light:hover{border-color:var(--gold-400);background:rgba(255,255,255,.08)}
+.btn--sm{height:42px;font-size:var(--fs-sm);padding:0 var(--sp-5)}
+
+/* ---------- 顶部导航 ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid transparent;transition:border-color var(--t),box-shadow var(--t),background var(--t)}
+.nav.scrolled{border-color:var(--line-200);box-shadow:var(--sh-sm)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:var(--sp-3);font-weight:900;color:var(--navy-800);font-size:var(--fs-lg);letter-spacing:.02em}
+.brand .logo{width:38px;height:38px;flex:none}
+.brand small{display:block;font-size:var(--fs-xs);font-weight:500;color:var(--ink-500);letter-spacing:.18em}
+.nav-links{display:flex;align-items:center;gap:var(--sp-8);list-style:none}
+.nav-links a{font-size:var(--fs-base);font-weight:500;color:var(--ink-700);position:relative;padding:6px 0;transition:color var(--t-fast)}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--gold-500);transition:width var(--t)}
+.nav-links a:hover,.nav-links a.active{color:var(--navy-800)}
+.nav-links a.active::after,.nav-links a:hover::after{width:100%}
+.nav-cta{display:flex;align-items:center;gap:var(--sp-3)}
+.hamburger{display:none;width:44px;height:44px;border:none;background:transparent;cursor:pointer;align-items:center;justify-content:center}
+.hamburger span,.hamburger span::before,.hamburger span::after{content:"";display:block;width:22px;height:2px;background:var(--navy-800);border-radius:2px;transition:transform var(--t),opacity var(--t)}
+.hamburger span::before{transform:translateY(-7px)}.hamburger span::after{transform:translateY(7px)}
+body.menu-open .hamburger span{background:transparent}
+body.menu-open .hamburger span::before{transform:translateY(0) rotate(45deg)}
+body.menu-open .hamburger span::after{transform:translateY(0) rotate(-45deg)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(1200px 600px at 85% -10%,rgba(201,162,75,.22),transparent 60%),linear-gradient(160deg,var(--navy-900),var(--navy-700) 70%,var(--navy-800));color:#fff;overflow:hidden;padding:var(--sp-24) 0 var(--sp-20)}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(circle at 70% 30%,#000,transparent 70%);opacity:.5}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:var(--sp-12);align-items:center}
+.hero h1{font-family:var(--font-serif);font-weight:900;font-size:var(--fs-5xl);line-height:1.15;letter-spacing:.01em;margin:var(--sp-4) 0 var(--sp-5)}
+.hero h1 .accent{color:var(--gold-400)}
+.hero p.lead{font-size:var(--fs-lg);color:var(--navy-200);max-width:560px;margin-bottom:var(--sp-8)}
+.hero-actions{display:flex;gap:var(--sp-4);flex-wrap:wrap;margin-bottom:var(--sp-10)}
+.trust-row{display:flex;flex-wrap:wrap;gap:var(--sp-6);padding-top:var(--sp-6);border-top:1px solid rgba(255,255,255,.14)}
+.trust-row .t{display:flex;flex-direction:column}
+.trust-row .t b{font-size:var(--fs-2xl);font-weight:900;color:#fff;line-height:1.1}
+.trust-row .t span{font-size:var(--fs-sm);color:var(--navy-300)}
+/* Hero 右侧玻璃卡 */
+.hero-card{position:relative;background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.18);border-radius:var(--r-2xl);padding:var(--sp-8);backdrop-filter:blur(8px);box-shadow:var(--sh-xl)}
+.hero-card h3{font-size:var(--fs-lg);font-weight:700;margin-bottom:var(--sp-5);color:#fff;display:flex;align-items:center;gap:var(--sp-2)}
+.hero-card h3 svg{width:22px;height:22px;color:var(--gold-400)}
+.metric{margin-bottom:var(--sp-5)}
+.metric .m-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--sp-2)}
+.metric .m-top b{font-size:var(--fs-xl);font-weight:900;color:var(--gold-400)}
+.metric .m-top span{font-size:var(--fs-xs);color:var(--navy-200)}
+.bar{height:8px;border-radius:var(--r-pill);background:rgba(255,255,255,.14);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--gold-500),var(--gold-300))}
+
+/* ---------- 数据带 ---------- */
+.stats{background:var(--navy-800);color:#fff}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-6);padding:var(--sp-12) 0;text-align:center}
+.stat .num{font-family:var(--font-serif);font-size:var(--fs-4xl);font-weight:900;color:var(--gold-400);line-height:1}
+.stat .lab{margin-top:var(--sp-2);font-size:var(--fs-sm);color:var(--navy-200);letter-spacing:.04em}
+
+/* ---------- 业务线卡片 ---------- */
+.biz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-6)}
+.biz{padding:var(--sp-8);background:var(--white);border:1px solid var(--line-200);border-radius:var(--r-xl);box-shadow:var(--sh-sm);position:relative;overflow:hidden;transition:transform var(--t),box-shadow var(--t),border-color var(--t)}
+.biz::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-500),transparent);transform:scaleX(0);transform-origin:left;transition:transform var(--t)}
+.biz:hover{transform:translateY(-6px);box-shadow:var(--sh-lg);border-color:var(--navy-100)}
+.biz:hover::before{transform:scaleX(1)}
+.biz .ic{width:56px;height:56px;border-radius:var(--r-md);background:var(--navy-50);color:var(--navy-700);display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-5);transition:background var(--t),color var(--t)}
+.biz:hover .ic{background:var(--navy-800);color:var(--gold-400)}
+.biz .ic svg{width:28px;height:28px}
+.biz h3{font-size:var(--fs-xl);font-weight:700;color:var(--navy-800);margin-bottom:var(--sp-2)}
+.biz .tag{display:inline-block;font-size:var(--fs-xs);font-weight:700;color:var(--gold-600);background:var(--gold-100);padding:3px 10px;border-radius:var(--r-pill);margin-bottom:var(--sp-4)}
+.biz p{color:var(--ink-500);font-size:var(--fs-base);margin-bottom:var(--sp-5)}
+.biz ul{list-style:none;display:grid;gap:var(--sp-3);margin-bottom:var(--sp-6)}
+.biz ul li{display:flex;gap:var(--sp-2);font-size:var(--fs-sm);color:var(--ink-700);align-items:flex-start}
+.biz ul li svg{width:18px;height:18px;color:var(--green-600);flex:none;margin-top:3px}
+.biz .more{font-weight:700;color:var(--navy-700);font-size:var(--fs-sm);display:inline-flex;align-items:center;gap:6px;transition:gap var(--t-fast)}
+.biz .more:hover{gap:12px;color:var(--gold-600)}
+
+/* ---------- 资质背书 ---------- */
+.quals{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-4)}
+.qual{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-5) var(--sp-4);background:var(--white);border:1px solid var(--line-200);border-radius:var(--r-md);box-shadow:var(--sh-sm);transition:transform var(--t),box-shadow var(--t),border-color var(--t)}
+.qual:hover{transform:translateY(-3px);box-shadow:var(--sh-md);border-color:var(--gold-300)}
+.qual .seal{width:40px;height:40px;flex:none;border-radius:var(--r-sm);background:var(--navy-50);color:var(--navy-700);display:flex;align-items:center;justify-content:center}
+.qual .seal svg{width:22px;height:22px}
+.qual b{display:block;font-size:var(--fs-sm);font-weight:700;color:var(--navy-800);line-height:1.3}
+.qual span{font-size:var(--fs-xs);color:var(--ink-400)}
+
+/* ---------- 安全保障 ---------- */
+.secure{background:linear-gradient(160deg,var(--navy-900),var(--navy-700));color:#fff;border-radius:var(--r-2xl);padding:var(--sp-12);display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-12);position:relative;overflow:hidden}
+.secure::after{content:"";position:absolute;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,75,.18),transparent 70%)}
+.secure h2{font-family:var(--font-serif);font-size:var(--fs-2xl);font-weight:700;margin-bottom:var(--sp-6)}
+.secure .sub{color:var(--navy-200);margin-bottom:var(--sp-8);max-width:420px}
+.flow{display:grid;gap:var(--sp-4)}
+.flow .step{display:flex;gap:var(--sp-4);align-items:flex-start}
+.flow .step .n{width:34px;height:34px;flex:none;border-radius:50%;background:var(--gold-500);color:var(--navy-900);font-weight:900;display:flex;align-items:center;justify-content:center;font-size:var(--fs-sm)}
+.flow .step b{display:block;font-weight:700;margin-bottom:2px}
+.flow .step p{color:var(--navy-200);font-size:var(--fs-sm)}
+.checklist{display:grid;gap:var(--sp-3);align-content:start}
+.checklist li{display:flex;gap:var(--sp-3);align-items:flex-start;list-style:none;padding:var(--sp-4);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-md);font-size:var(--fs-base)}
+.checklist li svg{width:20px;height:20px;color:var(--green-500);flex:none;margin-top:2px}
+
+/* ---------- 客户案例（脱敏） ---------- */
+.cases{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--sp-6)}
+.case{background:var(--white);border:1px solid var(--line-200);border-radius:var(--r-xl);padding:var(--sp-8);box-shadow:var(--sh-sm);transition:transform var(--t),box-shadow var(--t)}
+.case:hover{transform:translateY(-4px);box-shadow:var(--sh-lg)}
+.case .sector{display:inline-block;font-size:var(--fs-xs);font-weight:700;color:var(--navy-700);background:var(--navy-50);padding:4px 12px;border-radius:var(--r-pill);margin-bottom:var(--sp-4)}
+.case h3{font-size:var(--fs-xl);font-weight:700;color:var(--navy-800);margin-bottom:var(--sp-3)}
+.case p{color:var(--ink-500);font-size:var(--fs-sm);margin-bottom:var(--sp-5)}
+.case .out{display:flex;align-items:baseline;gap:var(--sp-2);padding-top:var(--sp-4);border-top:1px dashed var(--line-200)}
+.case .out b{font-family:var(--font-serif);font-size:var(--fs-2xl);font-weight:900;color:var(--green-600)}
+.case .out span{font-size:var(--fs-sm);color:var(--ink-500)}
+.note{margin-top:var(--sp-8);font-size:var(--fs-xs);color:var(--ink-400);text-align:center;display:flex;align-items:center;justify-content:center;gap:var(--sp-2)}
+.note svg{width:15px;height:15px;color:var(--ink-400)}
+
+/* ---------- 服务流程 ---------- */
+.proc{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-4);counter-reset:step}
+.proc .p{position:relative;padding:var(--sp-6) var(--sp-5);background:var(--white);border:1px solid var(--line-200);border-radius:var(--r-lg);box-shadow:var(--sh-sm)}
+.proc .p .n{font-family:var(--font-serif);font-size:var(--fs-2xl);font-weight:900;color:var(--navy-100);line-height:1}
+.proc .p h4{font-size:var(--fs-lg);font-weight:700;color:var(--navy-800);margin:var(--sp-2) 0 var(--sp-2)}
+.proc .p p{font-size:var(--fs-sm);color:var(--ink-500)}
+.proc .p:not(:last-child)::after{content:"";position:absolute;top:42px;right:-14px;width:24px;height:2px;background:var(--gold-300);z-index:1}
+
+/* ---------- 联系/留资 ---------- */
+.contact{display:grid;grid-template-columns:.9fr 1.1fr;gap:var(--sp-12);align-items:start}
+.contact .info h2{font-family:var(--font-serif);font-size:var(--fs-3xl);font-weight:700;color:var(--navy-800);margin-bottom:var(--sp-4)}
+.contact .info p{color:var(--ink-500);margin-bottom:var(--sp-8);max-width:420px}
+.contact .info .row{display:flex;gap:var(--sp-3);align-items:center;margin-bottom:var(--sp-4);color:var(--ink-700)}
+.contact .info .row svg{width:22px;height:22px;color:var(--navy-600);flex:none}
+.form{background:var(--white);border:1px solid var(--line-200);border-radius:var(--r-xl);padding:var(--sp-8);box-shadow:var(--sh-md)}
+.field{margin-bottom:var(--sp-5)}
+.field label{display:block;font-size:var(--fs-sm);font-weight:700;color:var(--navy-800);margin-bottom:var(--sp-2)}
+.field input,.field select,.field textarea{width:100%;font-family:inherit;font-size:var(--fs-base);color:var(--ink-900);padding:0 var(--sp-4);height:48px;border:1.5px solid var(--line-300);border-radius:var(--r-md);background:var(--line-100);transition:border-color var(--t-fast),box-shadow var(--t-fast),background var(--t-fast)}
+.field textarea{height:auto;padding:var(--sp-3) var(--sp-4);resize:vertical;min-height:96px}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--navy-500);background:#fff;box-shadow:0 0 0 4px rgba(47,99,154,.12)}
+.field.err input,.field.err select{border-color:var(--danger);background:#fdf3f2}
+.field .msg{font-size:var(--fs-xs);color:var(--danger);margin-top:6px;display:none}
+.field.err .msg{display:block}
+.form .btn{width:100%;height:52px}
+.form-success{display:none;text-align:center;padding:var(--sp-8) var(--sp-4)}
+.form-success.show{display:block;animation:pop var(--t-slow)}
+.form-success .ok{width:64px;height:64px;margin:0 auto var(--sp-4);border-radius:50%;background:var(--green-100);color:var(--green-600);display:flex;align-items:center;justify-content:center}
+.form-success .ok svg{width:32px;height:32px}
+.form-success h3{font-size:var(--fs-xl);font-weight:700;color:var(--navy-800);margin-bottom:var(--sp-2)}
+.form-success p{color:var(--ink-500)}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+
+/* ---------- 页脚 ---------- */
+.footer{background:var(--navy-900);color:var(--navy-200);padding:var(--sp-16) 0 var(--sp-8)}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:var(--sp-8)}
+.footer .brand{color:#fff;margin-bottom:var(--sp-4)}
+.footer p.desc{font-size:var(--fs-sm);color:var(--navy-300);max-width:300px}
+.footer h4{color:#fff;font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;margin-bottom:var(--sp-4);text-transform:uppercase}
+.footer ul{list-style:none;display:grid;gap:var(--sp-3)}
+.footer ul a{font-size:var(--fs-sm);color:var(--navy-300);transition:color var(--t-fast)}
+.footer ul a:hover{color:var(--gold-400)}
+.footer-bottom{margin-top:var(--sp-12);padding-top:var(--sp-6);border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-3);font-size:var(--fs-xs);color:var(--navy-400)}
+.footer-bottom .disc{display:flex;align-items:center;gap:6px}
+.footer-bottom .disc svg{width:14px;height:14px}
+
+/* ---------- 滚动揭示 ---------- */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- 移动端菜单面板 ---------- */
+.mobile-menu{position:fixed;inset:72px 0 auto 0;background:#fff;box-shadow:var(--sh-lg);border-top:1px solid var(--line-200);padding:var(--sp-6);display:none;z-index:49;flex-direction:column;gap:var(--sp-2)}
+body.menu-open .mobile-menu{display:flex}
+.mobile-menu a{padding:var(--sp-3) 0;font-weight:500;color:var(--ink-700);border-bottom:1px solid var(--line-100)}
+.mobile-menu .btn{margin-top:var(--sp-3)}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;gap:var(--sp-10)}
+  .hero-card{max-width:520px}
+  .secure{grid-template-columns:1fr;gap:var(--sp-8)}
+  .contact{grid-template-columns:1fr;gap:var(--sp-8)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:860px){
+  .nav-links,.nav-cta .btn{display:none}
+  .hamburger{display:flex}
+  .biz-grid,.cases{grid-template-columns:1fr}
+  .quals{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:var(--sp-8)}
+  .proc{grid-template-columns:1fr 1fr}
+  .proc .p:not(:last-child)::after{display:none}
+  .section{padding:var(--sp-16) 0}
+  .hero h1{font-size:var(--fs-4xl)}
+}
+@media (max-width:480px){
+  .quals,.proc{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:2.4rem}
+  .footer-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 导航 ============ -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top" aria-label="华钦麒科技 首页">
+      <svg class="logo" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 3 6 10v12c0 11 7.6 19.4 18 23 10.4-3.6 18-12 18-23V10L24 3Z" fill="#0E2A47"/>
+        <path d="M24 3 6 10v12c0 11 7.6 19.4 18 23 10.4-3.6 18-12 18-23V10L24 3Z" stroke="#C9A24B" stroke-width="2"/>
+        <path d="M16 24l5.5 5.5L33 18" stroke="#C9A24B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>华钦麒科技<small>HUAQINQI TECH</small></span>
+    </a>
+    <nav aria-label="主导航">
+      <ul class="nav-links">
+        <li><a href="#capability">核心能力</a></li>
+        <li><a href="#qual">资质背书</a></li>
+        <li><a href="#secure">安全保障</a></li>
+        <li><a href="#cases">客户案例</a></li>
+        <li><a href="#process">服务流程</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn--primary btn--sm" href="#contact">获取方案咨询</a>
+      <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#capability">核心能力</a>
+    <a href="#qual">资质背书</a>
+    <a href="#secure">安全保障</a>
+    <a href="#cases">客户案例</a>
+    <a href="#process">服务流程</a>
+    <a class="btn btn--primary" href="#contact">获取方案咨询</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ Hero ============ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow" style="color:var(--gold-400)">涉密档案数字化 · 信息安全</span>
+      <h1>守护每一份机密档案的<br><span class="accent">安全</span>与<span class="accent">价值</span></h1>
+      <p class="lead">11 年专注政企涉密档案全生命周期管理，持有甲级涉密资质与军工二级保密资格。500+ 项目 100% 验收通过，安全零事故——做华中政企可信赖的档案数字化伙伴。</p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="#contact">获取方案咨询</a>
+        <a class="btn btn--outline-light" href="#capability">查看核心能力 →</a>
+      </div>
+      <div class="trust-row">
+        <div class="t"><b>11<span style="font-size:1rem">年</span></b><span>行业深耕</span></div>
+        <div class="t"><b>甲级</b><span>涉密资质</span></div>
+        <div class="t"><b>军工二级</b><span>保密资格</span></div>
+        <div class="t"><b>0</b><span>安全事故</span></div>
+      </div>
+    </div>
+    <aside class="hero-card" aria-label="核心能力指标">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        能力一览
+      </h3>
+      <div class="metric">
+        <div class="m-top"><b>&gt;99%</b><span>档案 AI 识别准确率</span></div>
+        <div class="bar"><i style="width:99%"></i></div>
+      </div>
+      <div class="metric">
+        <div class="m-top"><b>500+</b><span>交付项目</span></div>
+        <div class="bar"><i style="width:92%"></i></div>
+      </div>
+      <div class="metric">
+        <div class="m-top"><b>100%</b><span>验收通过率</span></div>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+      <div class="metric" style="margin-bottom:0">
+        <div class="m-top"><b>300+</b><span>专业团队</span></div>
+        <div class="bar"><i style="width:85%"></i></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ 数据带 ============ -->
+<section class="stats">
+  <div class="container stats-grid">
+    <div class="stat reveal"><div class="num">11</div><div class="lab">年 行业深耕</div></div>
+    <div class="stat reveal"><div class="num">500+</div><div class="lab">个 交付项目</div></div>
+    <div class="stat reveal"><div class="num">100%</div><div class="lab">验收通过率</div></div>
+    <div class="stat reveal"><div class="num">0</div><div class="lab">起 安全事故</div></div>
+  </div>
+</section>
+
+<!-- ============ 核心能力 / 业务线 ============ -->
+<section class="section" id="capability">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">核心能力</span>
+      <h2>三大业务线，覆盖档案全生命周期</h2>
+      <p>从数字化加工到涉密系统集成，再到智慧应用开发，提供端到端可信交付。</p>
+    </div>
+    <div class="biz-grid">
+      <article class="biz reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h11l5 5v11H4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 4v5h5M8 13h8M8 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <span class="tag">业务线 A</span>
+        <h3>档案全生命周期数字化</h3>
+        <p>采集、整理、OCR 与 AI 识别、长期保存与利用，构建可信数字档案底座。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>AI 辅助编目，识别准确率 &gt;99%</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>海量图纸/胶片/音视频多形态加工</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>全文检索与知识图谱利用</li>
+        </ul>
+        <a class="more" href="#contact">了解方案 →</a>
+      </article>
+      <article class="biz reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="11" r="2.5" stroke="currentColor" stroke-width="2"/></svg></div>
+        <span class="tag">业务线 B</span>
+        <h3>涉密系统集成与安全</h3>
+        <p>涉密网络、机房与系统集成，落实分级保护与合规审查，守住安全底线。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>分级保护 / 等保合规建设</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>涉密机房与运维体系建设</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>保密审查全流程陪跑</li>
+        </ul>
+        <a class="more" href="#contact">了解方案 →</a>
+      </article>
+      <article class="biz reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="17" r="3" stroke="currentColor" stroke-width="2"/></svg></div>
+        <span class="tag">业务线 C</span>
+        <h3>智慧应用开发</h3>
+        <p>面向档案利用与治理的软件平台，让数据从"存得住"走向"用得好"。</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>档案利用与自助调阅平台</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>数据中台与可视化驾驶舱</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>与既有业务系统无缝对接</li>
+        </ul>
+        <a class="more" href="#contact">了解方案 →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 资质背书 ============ -->
+<section class="section bg-paper" id="qual">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">资质背书</span>
+      <h2>权威资质，构筑信任底座</h2>
+      <p>多重国家级与行业资质认证，是客户把机密档案托付给我们的底气。</p>
+    </div>
+    <div class="quals">
+      <div class="qual reveal"><div class="seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg></div><div><b>国家高新技术企业</b><span>国家级</span></div></div>
+      <div class="qual reveal"><div class="seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg></div><div><b>省级"专精特新"</b><span>省级</span></div></div>
+      <div class="qual reveal"><div class="seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg></div><div><b>涉密档案数字化（甲级）</b><span>核心资质</span></div></div>
+      <div class="qual reveal"><div class="seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg></div><div><b>涉密系统集成（乙级）</b><span>核心资质</span></div></div>
+      <div class="qual reveal"><div class="seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg></div><div><b>军工二级保密资格</b><span>涉密资格</span></div></div>
+      <div class="qual reveal"><div class="seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg></div><div><b>ISO 9001 质量体系</b><span>国际认证</span></div></div>
+      <div class="qual reveal"><div class="seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg></div><div><b>信息安全服务资质</b><span>行业认证</span></div></div>
+      <div class="qual reveal"><div class="seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg></div><div><b>20+ 自主知识产权</b><span>研发实力</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 安全保障 ============ -->
+<section class="section" id="secure">
+  <div class="container">
+    <div class="secure reveal">
+      <div>
+        <h2>全流程 + 全人员的安全保障</h2>
+        <p class="sub">保密不是某一环节，而是贯穿项目始终的体系。我们以"流程可审计、人员可追溯"守住每一份机密。</p>
+        <div class="flow">
+          <div class="step"><div class="n">1</div><div><b>物理隔离</b><p>独立涉密加工场所，门禁 + 监控 + 封闭网络。</p></div></div>
+          <div class="step"><div class="n">2</div><div><b>数据加密</b><p>传输与存储全程加密，密钥分级管理。</p></div></div>
+          <div class="step"><div class="n">3</div><div><b>过程审计</b><p>操作留痕、日志可追溯，异常实时告警。</p></div></div>
+          <div class="step"><div class="n">4</div><div><b>闭环销毁</b><p>介质按规定销毁，出具合规证明。</p></div></div>
+        </div>
+      </div>
+      <ul class="checklist">
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>全员保密培训与持证上岗，签署保密协议</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>最小权限原则，按角色隔离数据访问</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>7×24 安全值守与定期保密自查</li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>项目终身追溯，责任到人、可倒查</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 客户案例（脱敏） ============ -->
+<section class="section bg-paper" id="cases">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">客户案例</span>
+      <h2>脱敏呈现的标杆实践</h2>
+      <p>以下案例均经客户授权并做脱敏处理，不披露任何涉密细节。</p>
+    </div>
+    <div class="cases">
+      <article class="case reveal">
+        <span class="sector">某省级政务档案中心</span>
+        <h3>千万页级档案数字化工程</h3>
+        <p>完成历史档案规模化数字化与 AI 编目，构建统一检索利用平台，调阅效率显著提升。</p>
+        <div class="out"><b>80%</b><span>检索效率提升</span></div>
+      </article>
+      <article class="case reveal">
+        <span class="sector">某大型军工单位</span>
+        <h3>涉密系统集成与分级保护改造</h3>
+        <p>按分级保护要求重构涉密网络与机房，配套运维体系，顺利通过保密审查。</p>
+        <div class="out"><b>100%</b><span>审查一次通过</span></div>
+      </article>
+      <article class="case reveal">
+        <span class="sector">某地市公检法</span>
+        <h3>档案智慧利用平台</h3>
+        <p>打通多警种档案壁垒，自助调阅让办案调卷从"小时级"压缩到"分钟级"。</p>
+        <div class="out"><b>分钟级</b><span>调卷响应</span></div>
+      </article>
+      <article class="case reveal">
+        <span class="sector">某高校 / 科研机构</span>
+        <h3>档案知识图谱与联合实验室</h3>
+        <p>与高校共建联合实验室，沉淀档案知识图谱，支撑科研档案智能利用。</p>
+        <div class="out"><b>20+</b><span>联合知识产权</span></div>
+      </article>
+    </div>
+    <p class="note"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg>依据《保密法》要求，所有涉密信息均已脱敏，仅展示非密成效指标。</p>
+  </div>
+</section>
+
+<!-- ============ 服务流程 ============ -->
+<section class="section" id="process">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">服务流程</span>
+      <h2>四步交付，标准可控</h2>
+      <p>从咨询到质保，每一步都有明确交付物与里程碑。</p>
+    </div>
+    <div class="proc">
+      <div class="p reveal"><div class="n">01</div><h4>需求咨询</h4><p>现场调研与保密环境评估，明确范围与合规边界。</p></div>
+      <div class="p reveal"><div class="n">02</div><h4>方案设计</h4><p>定制化实施方案、安全设计与报价，双方确认。</p></div>
+      <div class="p reveal"><div class="n">03</div><h4>安全实施</h4><p>驻场加工 / 系统集成，全程留痕、阶段验收。</p></div>
+      <div class="p reveal"><div class="n">04</div><h4>质保追溯</h4><p>交付培训与运维支持，项目终身可追溯。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 联系 / 留资 ============ -->
+<section class="section bg-paper" id="contact">
+  <div class="container contact">
+    <div class="info reveal">
+      <h2>把机密档案，交给懂安全的人</h2>
+      <p>留下需求，我们的方案顾问将在 1 个工作日内与您联系，提供合规、可落地的档案数字化与信息安全方案。</p>
+      <div class="row"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4z" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> 商务合作：solution@huaqinqi.com（示例）</div>
+      <div class="row"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h4l2 5-3 2a12 12 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg> 咨询热线：400-XXX-XXXX（示例）</div>
+      <div class="row"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7Z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="2"/></svg> 武汉 · 服务辐射全国</div>
+    </div>
+    <div class="form reveal" id="formCard">
+      <form id="leadForm" novalidate>
+        <div class="field" id="f-name">
+          <label for="name">姓名 *</label>
+          <input id="name" name="name" type="text" placeholder="请输入您的称呼" autocomplete="name" />
+          <div class="msg">请填写姓名</div>
+        </div>
+        <div class="field" id="f-org">
+          <label for="org">单位名称 *</label>
+          <input id="org" name="org" type="text" placeholder="请输入您的单位 / 机构" autocomplete="organization" />
+          <div class="msg">请填写单位名称</div>
+        </div>
+        <div class="field" id="f-phone">
+          <label for="phone">联系电话 *</label>
+          <input id="phone" name="phone" type="tel" placeholder="请输入 11 位手机号" autocomplete="tel" inputmode="numeric" />
+          <div class="msg">请输入有效的 11 位手机号</div>
+        </div>
+        <div class="field" id="f-need">
+          <label for="need">主要需求</label>
+          <select id="need" name="need">
+            <option value="">请选择（可选）</option>
+            <option>档案全生命周期数字化</option>
+            <option>涉密系统集成与安全</option>
+            <option>智慧应用开发</option>
+            <option>综合咨询 / 其他</option>
+          </select>
+        </div>
+        <button class="btn btn--primary" type="submit">提交咨询需求</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="ok"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>提交成功，感谢您的信任</h3>
+        <p>我们的方案顾问将在 1 个工作日内与您联系。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ 页脚 ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand">
+          <svg class="logo" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <path d="M24 3 6 10v12c0 11 7.6 19.4 18 23 10.4-3.6 18-12 18-23V10L24 3Z" fill="#0E2A47"/>
+            <path d="M24 3 6 10v12c0 11 7.6 19.4 18 23 10.4-3.6 18-12 18-23V10L24 3Z" stroke="#C9A24B" stroke-width="2"/>
+            <path d="M16 24l5.5 5.5L33 18" stroke="#C9A24B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>华钦麒科技</span>
+        </div>
+        <p class="desc">华中政企涉密档案数字化与信息安全首选伙伴。11 年 · 甲级资质 · 安全零事故。</p>
+      </div>
+      <div>
+        <h4>核心能力</h4>
+        <ul>
+          <li><a href="#capability">档案数字化</a></li>
+          <li><a href="#capability">涉密系统集成</a></li>
+          <li><a href="#capability">智慧应用开发</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>关于我们</h4>
+        <ul>
+          <li><a href="#qual">资质背书</a></li>
+          <li><a href="#secure">安全保障</a></li>
+          <li><a href="#cases">客户案例</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>联系</h4>
+        <ul>
+          <li><a href="#contact">方案咨询</a></li>
+          <li><a href="#contact">服务流程</a></li>
+          <li><a href="#contact">合作洽谈</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 湖北华钦麒科技有限公司 · 保留所有权利</span>
+      <span class="disc"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="2"/></svg>涉密信息已脱敏，遵守《保密法》</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // 导航滚动态
+  var nav = document.getElementById('nav');
+  var onScroll = function(){ nav.classList.toggle('scrolled', window.scrollY > 8); };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  // 移动端菜单
+  var burger = document.getElementById('hamburger');
+  burger.addEventListener('click', function(){
+    var open = document.body.classList.toggle('menu-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+  });
+  document.querySelectorAll('#mobileMenu a').forEach(function(a){
+    a.addEventListener('click', function(){
+      document.body.classList.remove('menu-open');
+      burger.setAttribute('aria-expanded','false');
+    });
+  });
+
+  // 滚动揭示
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // 导航高亮（当前区块）
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var id = '#' + e.target.id;
+        links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === id); });
+      }
+    });
+  }, {threshold:.5});
+  sections.forEach(function(s){ spy.observe(s); });
+
+  // 表单校验
+  var form = document.getElementById('leadForm');
+  var success = document.getElementById('formSuccess');
+  var setErr = function(id, bad){ document.getElementById(id).classList.toggle('err', bad); };
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var name = form.name.value.trim();
+    var org = form.org.value.trim();
+    var phone = form.phone.value.trim();
+    var eName = name === '';
+    var eOrg = org === '';
+    var ePhone = !/^1\d{10}$/.test(phone);
+    setErr('f-name', eName); setErr('f-org', eOrg); setErr('f-phone', ePhone);
+    if(eName || eOrg || ePhone){ (eName?form.name:eOrg?form.org:form.phone).focus(); return; }
+    form.style.display = 'none';
+    success.classList.add('show');
+  });
+  ['name','org','phone'].forEach(function(k){
+    form[k].addEventListener('input', function(){ document.getElementById('f-'+k).classList.remove('err'); });
+  });
+})();
+</script>
+</body>
+</html>

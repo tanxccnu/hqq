@@ -133,7 +133,7 @@ const server = http.createServer(function(req, res){
   }
 
   let filePath = path.join(ROOT, decodeURIComponent(pathname));
-  if(pathname === '/') filePath = path.join(ROOT, '华钦麒科技-宣传页面.html');
+  if(pathname === '/') filePath = path.join(ROOT, 'default.html');
   if(fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()){
     filePath = path.join(filePath, 'index.html');
   }
